@@ -28,7 +28,14 @@ namespace ToDoManager
                         Console.WriteLine(taskTitle + " has been added successfully!");
                         break;
                     case "2":
-                        manage.ListTasks();
+                        if(manage.TaskCounter == 0)
+                        {
+                            Console.WriteLine("No tasks added yet.");
+                        } else
+                        {
+                            manage.ListTasks();
+                        }
+                            
                         break;
                     case "3":
                         Console.WriteLine("provide the task ID from the table below: ");
@@ -41,7 +48,15 @@ namespace ToDoManager
                         manage.CompleteTask(taskId);
                         break;
                     case "4":
-                        Console.WriteLine("selected 4");
+                        Console.WriteLine("provide the task ID from the table below to be deleted: ");
+                        manage.ListTasks();
+                        int deletedTaskId;
+                        while (!int.TryParse(Console.ReadLine(), out deletedTaskId) || deletedTaskId < 0 || deletedTaskId >= manage.TaskCounter)
+                        {
+                            Console.WriteLine("Invalid ID, please enter a valid one:");
+                        }
+                        
+                        manage.DeleteTask(deletedTaskId);
                         break;
                     case "5":
                         Console.WriteLine("selected 5");

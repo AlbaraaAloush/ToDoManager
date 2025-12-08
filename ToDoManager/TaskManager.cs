@@ -6,6 +6,7 @@ namespace ToDoManager
     {
         private Task[] tasks = new Task[100];
         private int taskCounter; // uninitialized, so value is zero by default
+        private int nextId;
 
         public Task[] Tasks
         {
@@ -18,18 +19,15 @@ namespace ToDoManager
 
         public void AddTask(string taskTitle)
         {
-            Task newTask = new Task(TaskCounter, taskTitle);
+            Task newTask = new Task(nextId, taskTitle);
             tasks[taskCounter] = newTask;
+            nextId++;
             taskCounter++;
         }
 
         public void ListTasks()
         {
-            if (taskCounter == 0)
-            {
-                Console.WriteLine("No Tasks added yet");
-            } else
-            {
+          
                 Console.WriteLine($"{"Task ID", -10} { "Task Title", -15} {"Task Status"}");
                 for (int i = 0; i < taskCounter; i++)
                 {
@@ -39,7 +37,7 @@ namespace ToDoManager
                     }
                    
                 }
-            }   
+               
         }
 
         public void CompleteTask(int taskId)
@@ -65,6 +63,39 @@ namespace ToDoManager
             }
                 
 
+        }
+
+        public void DeleteTask(int taskId)
+        {
+            if (taskCounter == 0)
+            {
+                Console.WriteLine("No Tasks added yet");
+            }
+
+            int indexToDelete = -1;
+
+            for(int i = 0; i < taskCounter; i++)
+            {
+                if (tasks[i].Id == taskId)
+                {
+                    indexToDelete = i;
+                    break;
+                }
+            }
+
+            if(indexToDelete == -1)
+            {
+                Console.WriteLine("No Task found with ID " + taskId);
+            }
+
+            for(int i = indexToDelete; i < taskCounter - 1; i++)
+            {
+                tasks[i] = tasks[i + 1];
+            }
+
+            taskCounter--;
+            tasks[taskCounter] = null;
+            Console.WriteLine("Task " + taskId + " Deleted Successfully");
         }
     } 
 }
