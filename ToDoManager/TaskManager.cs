@@ -41,5 +41,30 @@ namespace ToDoManager
                 }
             }   
         }
-    }
+
+        public void CompleteTask(int taskId)
+        {
+            if (taskCounter == 0)
+            {
+                Console.WriteLine("No Tasks added yet");
+            } else if( taskId >= taskCounter || taskId < 0)
+            {
+                Console.WriteLine("Invalid ID, please enter a valid one:");
+                return;
+            } else
+            {
+                for(int i = 0; i < taskCounter; i++)
+                {
+                    if(taskId == tasks[i].Id)
+                    {
+                        tasks[i].markCompleted();
+                        Console.WriteLine("Task " + tasks[i].Id + " marked as completed successfully.");
+                        break;
+                    }
+                }
+            }
+                
+
+        }
+    } 
 }

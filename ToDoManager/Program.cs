@@ -31,7 +31,14 @@ namespace ToDoManager
                         manage.ListTasks();
                         break;
                     case "3":
-                        Console.WriteLine("selected 3");
+                        Console.WriteLine("provide the task ID from the table below: ");
+                        manage.ListTasks();
+                        int taskId;
+                        while (!int.TryParse(Console.ReadLine(), out taskId) || taskId < 0 || taskId >= manage.TaskCounter)
+                        {
+                            Console.WriteLine("Invalid ID, please enter a valid one:");
+                        }
+                        manage.CompleteTask(taskId);
                         break;
                     case "4":
                         Console.WriteLine("selected 4");
