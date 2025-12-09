@@ -24,7 +24,7 @@
         get { return isCompleted; }
     }
 
-    public void markCompleted()
+    public void MarkCompleted()
     {
         isCompleted = true;
     }

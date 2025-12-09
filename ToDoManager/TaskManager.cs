@@ -1,101 +1,62 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace ToDoManager
 {
     class TaskManager
     {
-        private Task[] tasks = new Task[100];
-        private int taskCounter; // uninitialized, so value is zero by default
-        private int nextId;
+        private List<Task> tasks = new List<Task>();
+        private int nextId; // used to give ID to each task
 
-        public Task[] Tasks
+        public List<Task> Tasks
         {
             get { return tasks; }
         }
-        public int TaskCounter
+
+        public Task GetTaskById(int taskId)
         {
-            get { return taskCounter; }
+            return tasks.FirstOrDefault(t => t.Id == taskId);
         }
 
         public void AddTask(string taskTitle)
         {
-            Task newTask = new Task(nextId, taskTitle);
-            tasks[taskCounter] = newTask;
+            tasks.Add(new Task(nextId, taskTitle));
             nextId++;
-            taskCounter++;
         }
 
-        public void ListTasks()
+        public List<Task> ListTasks()
         {
-          
-                Console.WriteLine($"{"Task ID", -10} { "Task Title", -15} {"Task Status"}");
-                for (int i = 0; i < taskCounter; i++)
-                {
-                    if (tasks[i]!=null)
-                    {
-                        Console.WriteLine($"{tasks[i].Id, -10} {tasks[i].Title, -15} {(tasks[i].IsCompleted?"Complete":"Incomplete")}");
-                    }
-                   
-                }
+
+            return tasks;
+           
+                
                
         }
 
-        public void CompleteTask(int taskId)
+        public bool CompleteTask(int taskId)
         {
-            if (taskCounter == 0)
+            Task task = GetTaskById(taskId);
+
+            if (task == null)
             {
-                Console.WriteLine("No Tasks added yet");
-            } else if( taskId >= taskCounter || taskId < 0)
-            {
-                Console.WriteLine("Invalid ID, please enter a valid one:");
-                return;
-            } else
-            {
-                for(int i = 0; i < taskCounter; i++)
-                {
-                    if(taskId == tasks[i].Id)
-                    {
-                        tasks[i].markCompleted();
-                        Console.WriteLine("Task " + tasks[i].Id + " marked as completed successfully.");
-                        break;
-                    }
-                }
+                return false;
             }
-                
+
+            task.MarkCompleted();
+            return true;
 
         }
 
-        public void DeleteTask(int taskId)
+        public bool DeleteTask(int taskId)
         {
-            if (taskCounter == 0)
+            Task task = GetTaskById(taskId);
+
+            if (task == null)
             {
-                Console.WriteLine("No Tasks added yet");
+                return false;
             }
-
-            int indexToDelete = -1;
-
-            for(int i = 0; i < taskCounter; i++)
-            {
-                if (tasks[i].Id == taskId)
-                {
-                    indexToDelete = i;
-                    break;
-                }
-            }
-
-            if(indexToDelete == -1)
-            {
-                Console.WriteLine("No Task found with ID " + taskId);
-            }
-
-            for(int i = indexToDelete; i < taskCounter - 1; i++)
-            {
-                tasks[i] = tasks[i + 1];
-            }
-
-            taskCounter--;
-            tasks[taskCounter] = null;
-            Console.WriteLine("Task " + taskId + " Deleted Successfully");
+            tasks.Remove(task);
+            return true;
         }
     } 
 }
